@@ -1,7 +1,6 @@
 import pandas as pd
 import requests
 import json
-import sys
 
 film_csv_path = 'film.csv'
 film_actor_csv_path = 'film_actor.csv'
@@ -26,18 +25,14 @@ def main() -> None:
     actor_dicts_indexed = make_actor_dicts_indexed(film_dicts_indexed)
 
     # Load to firebase
-    load_to_firebase(film_dicts_indexed, actor_dicts_indexed)
+    load_to_firebase(film_dicts_indexed, 'FILMs')
+    load_to_firebase(actor_dicts_indexed, 'ACTORs')
 
 
-def load_to_firebase(film_dicts_indexed, actor_dicts_indexed):
-    for film_id, film_dict in film_dicts_indexed.items():
-        url = url_base + "FILMs/" + str(film_id) + '.json'
-        json_str = json.dumps(film_dict, indent=4)
-        res = requests.put(url, json_str)
-    for actor_id, actor_dict in actor_dicts_indexed.items():
-        url = url_base + "ACTORs/" + str(actor_id) + '.json'
-        json_str = json.dumps(actor_dict, indent=4)
-        res = requests.put(url, json_str)
+def load_to_firebase(dicts_indexed, base_name):
+    url = url_base + base_name + '.json'
+    json_str = json.dumps(dicts_indexed, indent=4)
+    res = requests.put(url, json_str)
 
 
 def load_csv_as_dict_list(csv_path, separator, cols):
@@ -65,30 +60,15 @@ def add_category(film_dicts_indexed):
         film_dicts_indexed[film_category_dict['film_id']]['category'] = category_name.lower()
 
 
-def add_actors(film_dicts_indexed):
-    film_actor_dict_list = load_csv_as_dict_list(film_actor_csv_path, global_separator, ['film_id', 'actor_id'])
-    actor_dict_list = load_csv_as_dict_list(actor_csv_path, global_separator, ['actor_id', 'first_name', 'last_name'])
-    actor_dicts_indexed = add_index(actor_dict_list, 'actor_id')
-    for film_actor_dict in film_actor_dict_list:
-        film_id = film_actor_dict['film_id']
-        actor_id = film_actor_dict['actor_id']
-        actor_name = (actor_dicts_indexed[actor_id]['first_name']
-                      + ' ' +
-                      actor_dicts_indexed[actor_id]['last_name']
-                      ).lower()
-        if actor_name not in film_dicts_indexed[film_id]['actors']:
-            film_dicts_indexed[film_id]['actors'][actor_name] = actor_id
-
-
 def make_actor_dicts_indexed(film_dicts_indexed):
     film_actor_dict_list = load_csv_as_dict_list(film_actor_csv_path, global_separator, ['film_id', 'actor_id'])
     actor_dict_list = load_csv_as_dict_list(actor_csv_path, global_separator, ['actor_id', 'first_name', 'last_name'])
     actor_dicts_indexed = add_index(actor_dict_list, 'actor_id')
     actor_dicts_indexed = {k: {
-            'actor_id': v['actor_id'],
-            'actor_name': (v['first_name'] + ' ' + v['last_name']).lower(),
-            'films': []
-        } for k, v in actor_dicts_indexed.items()}
+        'actor_id': v['actor_id'],
+        'actor_name': (v['first_name'] + ' ' + v['last_name']).lower(),
+        'films': []
+    } for k, v in actor_dicts_indexed.items()}
     for film_actor_dict in film_actor_dict_list:
         film_id = film_actor_dict['film_id']
         actor_id = film_actor_dict['actor_id']
