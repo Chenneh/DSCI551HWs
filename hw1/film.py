@@ -8,7 +8,7 @@ url_base = 'https://dsci551-hw1-52ec5-default-rtdb.firebaseio.com/'
 def main(argv: str) -> Union[List[dict], None]:
     # TODO: category, titles, release_year, rating(e.g., PG - 13), rental_rate, and rental_duration
     orderBy = 'orderBy=' + "\"" + "category" + "\""
-    equalTo = 'equalTo=' + "\"" + argv + "\""
+    equalTo = 'equalTo=' + "\"" + argv.lower() + "\""
     url = url_base + 'FILMs' + '.json' + '?' + orderBy + '&' + equalTo
     result = [
         {
