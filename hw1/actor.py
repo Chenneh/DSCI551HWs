@@ -10,6 +10,7 @@ def main(argv: str) -> Union[Dict[str, List[dict]], None]:
     orderBy = 'orderBy=' + "\"" + "actor_name" + "\""
     equalTo = 'equalTo=' + "\"" + argv.lower() + "\""
     url = url_base + 'ACTORs' + '.json' + '?' + orderBy + '&' + equalTo
+    print(url)
     result = make_result(requests.get(url).json())
     return result
 
