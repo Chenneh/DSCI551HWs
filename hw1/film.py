@@ -10,7 +10,6 @@ def main(argv: str) -> Union[List[dict], None]:
     orderBy = 'orderBy=' + "\"" + "category" + "\""
     equalTo = 'equalTo=' + "\"" + argv.lower() + "\""
     url = url_base + 'FILMs' + '.json' + '?' + orderBy + '&' + equalTo
-    print(url)
     result = [
         {
             "rating": v['rating'],
