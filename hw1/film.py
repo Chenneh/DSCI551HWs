@@ -19,7 +19,7 @@ def main(argv: str) -> Union[List[dict], None]:
             "title": v['title'],
         } for k, v in requests.get(url).json().items()]
     result = sorted(result, key=lambda x: x['title'])
-    return result
+    return None if len(result) == 0 else result
 
 
 if __name__ == '__main__':

@@ -11,7 +11,7 @@ def main(argv: str) -> Union[Dict[str, List[dict]], None]:
     equalTo = 'equalTo=' + "\"" + argv.lower() + "\""
     url = url_base + 'ACTORs' + '.json' + '?' + orderBy + '&' + equalTo
     result = make_result(requests.get(url).json())
-    return result
+    return None if len(result) == 0 else result
 
 
 def make_result(response_dict):
