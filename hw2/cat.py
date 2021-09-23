@@ -5,33 +5,40 @@
 import sys
 from typing import List, Union
 from lxml import etree
-from xml.dom import minidom
 
 database_path = 'main.xml'
+cols_film = ['title', 'release_year', 'rating', 'rental_rate', 'rental_duration']
 
-
-# using xpath:
-# film_table_prefix = "/root/film_table/film"
-# query_content = "[category/text()=" + "\'" + argv + "\'" + "]"
-#  query = film_table_prefix + query_content
-# query_result = root.xpath(query)
-
-# print(minidom.parseString(ET.tostring(query_result[0])).toprettyxml(indent="   "))
 
 def main(argv: str) -> Union[List[dict], None]:
     tree = etree.parse(database_path)
     root = tree.getroot()
-    query = "./film_table/film/" + "[" + "category=" + "\'" + argv + "\'" + "]"
-    result = root.findall(query)
-    result = [
-        {
+    film_ids = find_all_film_ids(root, argv)
+    result = find_films(root, film_ids)
+    return None if len(result) == 0 else result
+
+
+def find_all_film_ids(root, category):
+    query = "./category_table/category/" + "[" + "name=" + "\'" + category + "\'" + "]"
+    category_id = root.findall(query)[0].find('./category_id').text
+    query = "./film_category_table/film_category/" + "[" + "category_id=" + "\'" + category_id + "\'" + "]"
+    film_ids = [element.find('./film_id').text for element in root.findall(query)]
+    return film_ids
+
+
+def find_films(root, film_ids):
+    result = []
+    for film_id in film_ids:
+        query = "./film_table/film/" + "[" + "film_id=" + "\'" + film_id + "\'" + "]"
+        film_element = root.find(query)
+        to_res = {
             'title': film_element.find('./title').text,
             'release_year': film_element.find('./release_year').text,
             'rental_duration': film_element.find('./rental_duration').text,
             'rental_rate': film_element.find('./rental_rate').text,
             'rating': film_element.find('./rating').text,
-        } for film_element in result]
-
+        }
+        result.append(to_res)
     return result
 
 
