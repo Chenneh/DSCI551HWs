@@ -13,3 +13,5 @@
 *.zip
 compare.py
 *.pdf
+*.csv
+*/test/*
