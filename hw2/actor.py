@@ -45,7 +45,7 @@ def find_actor_films_dict(root, actor_ids):
             }
             film_infos.append(film_info)
         actor_films_dict[actor_id] = film_infos
-    return actor_films_dict
+    return {k: sorted(v, key=lambda x: x['title']) for k, v in actor_films_dict.items()}
 
 
 if __name__ == '__main__':

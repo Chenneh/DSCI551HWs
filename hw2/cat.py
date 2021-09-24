@@ -39,7 +39,7 @@ def find_films(root, film_ids):
             'rating': film_element.find('./rating').text,
         }
         result.append(to_res)
-    return result
+    return sorted(result, key=lambda x: x['title'])
 
 
 if __name__ == '__main__':
