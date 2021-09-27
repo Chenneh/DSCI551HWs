@@ -43,7 +43,7 @@ def csv_to_element_table(csv_path, separator, element_type):
         for col in cols:
             new_element_property = etree.Element(col)
             new_element_property.text = str(cur_dict[col])
-            if col != "title":
+            if col != "title" and col != "rating":
                 new_element_property.text = new_element_property.text.lower()
             new_element.append(new_element_property)
         table.append(new_element)
