@@ -10,9 +10,12 @@ database_path = 'main.xml'
 
 
 def main(argv: str) -> Union[Dict[str, List[dict]], None]:
+    first_last_name = argv.split(' ')
+    if len(first_last_name) < 2:
+        return None
     tree = etree.parse(database_path)
     root = tree.getroot()
-    actor_ids = find_all_actor_ids(root, argv.split(' '))
+    actor_ids = find_all_actor_ids(root, first_last_name)
     actor_films_dict = find_actor_films_dict(root, actor_ids)
     return None if len(actor_films_dict) == 0 else actor_films_dict
 
