@@ -13,7 +13,7 @@ cols_film = ['title', 'release_year', 'rating', 'rental_rate', 'rental_duration'
 def main(argv: str) -> Union[List[dict], None]:
     tree = etree.parse(database_path)
     root = tree.getroot()
-    film_ids = find_all_film_ids(root, argv)
+    film_ids = find_all_film_ids(root, argv.lower())
     result = find_films(root, film_ids)
     return None if len(result) == 0 else result
 

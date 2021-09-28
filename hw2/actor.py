@@ -13,6 +13,7 @@ def main(argv: str) -> Union[Dict[str, List[dict]], None]:
     first_last_name = argv.split(' ')
     if len(first_last_name) < 2:
         return None
+    first_last_name = [s.lower() for s in first_last_name]
     tree = etree.parse(database_path)
     root = tree.getroot()
     actor_ids = find_all_actor_ids(root, first_last_name)
