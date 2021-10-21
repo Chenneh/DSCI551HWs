@@ -1,3 +1,4 @@
+use sakila;
 select count(cate.category_id) as number_of_categories
 from 
 (

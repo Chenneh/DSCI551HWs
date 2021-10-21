@@ -1,3 +1,4 @@
+use sakila;
 select a.actor_id
 from actor a 
 	inner join film_actor fa on fa.actor_id=a.actor_id

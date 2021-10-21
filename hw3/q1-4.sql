@@ -1,3 +1,4 @@
+use sakila;
 select a.address_id, a.address, a.city_id
 from address a
 	inner join city ci on a.city_id=ci.city_id

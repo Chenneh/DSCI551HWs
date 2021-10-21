@@ -1,3 +1,4 @@
+use sakila;
 create view Comedy_film
 as
 select f.film_id, f.title
